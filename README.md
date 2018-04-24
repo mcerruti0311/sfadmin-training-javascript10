@@ -97,8 +97,8 @@ Flickr supports JSON.
 ```
 ## Accessing JSON Data
 To recover the data encoded into the JSON string, you need to somehow convert
-the string back to JavaScript code. This is usually referred to as *deserializing*
-the string.
+the string back to JavaScript code. This is usually referred to as
+*deserializing* the string.
 
 ## Using eval()
 Only more recent browsers have native support for JSON syntax (we talk about
@@ -217,7 +217,8 @@ grammatical rules:
 
 * It must not be a JavaScript reserved keyword.
 * It must not start with a number.
-* It must not include any special characters except the underscore or dollar sign.
+* It must not include any special characters except the underscore or dollar
+sign.
 
 The values in JSON objects can contain any of the following data types:
 
@@ -236,3 +237,172 @@ represented as some other data format, with the encoding and decoding programs
 following the same encoding and decoding rules.
 ```
 ## Simulating Associative Arrays
+In Hour 6, “Arrays,” we discussed the JavaScript array object and looked at
+its various properties and methods.
+
+You may recall that the elements in JavaScript arrays have unique numeric
+identifiers:
+```JavaScript
+var myArray = [];
+myArray[0] = 'Monday';
+myArray[1] = 'Tuesday';
+myArray[2] = 'Wednesday';
+```
+In many other programming languages, you can use textual keys to make the
+arrays more descriptive:
+
+`myArray["startDay"] = "Monday";`
+
+Unfortunately, JavaScript does not directly support such so-called associative
+arrays.
+
+However, using objects it is easy to go some way toward simulating their
+behavior. Using JSON notation makes the code easy to read and understand:
+
+```JavaScript
+var conference = { "startDay" : "Monday",
+    "nextDay"  : "Tuesday",
+    "endDay"  : "Wednesday"
+}
+```
+
+You can now access the object properties as if the object were an associative
+array:
+
+`alert(conference["startDay"]);  // outputs "Monday"`
+
+### Tip
+
+```
+This works because the two syntaxes
+object["property"]
+and
+object.property
+are equivalent in JavaScript.
+```
+### Caution
+
+```
+Remember that this is not really an associative array, although it looks like
+one. If you loop through the object, you will get, in addition to these three
+properties, any methods that have been assigned to the object.
+```
+
+## Creating Objects with JSON
+You might recall from Hour 6 that one convenient way to express an array is
+with square brackets:
+
+`var categories = ["news", "sport", "films", "music", "comedy"];`
+
+JSON provides us with a somewhat similar shorthand for defining JavaScript
+objects.
+
+### Tip
+```
+Although it was developed for describing JavaScript objects, JSON is
+independent of any language or platform. JSON libraries and tools exist for
+many programming languages, including Java, PHP, C, and others.
+```
+
+Properties
+As you’ve already seen, to express an object in JSON notation, you enclose the
+object in curly braces, rather than square ones, and list object properties
+as `"property":"value"` pairs:
+
+```JavaScript
+var user = {
+    "username" : "philb1234",
+    "location" : "Spain",
+    "height" : 1.80
+}
+```
+
+The object properties are immediately available to access in the usual fashion:
+
+`var name = user.username; //  variable 'name' contains 'philb1234'`
+
+### Tip
+
+```
+You may recall that using the statement
+
+var myObject = new Object();
+
+creates an “empty” instance of an object with no properties or methods. The
+equivalent in JSON notation, unsurprisingly, is
+
+var myObject = {};
+```
+
+## Methods
+You can add methods this way too, by using anonymous functions within the
+object definition:
+
+```JavaScript
+var user = {
+    "username" : "philb1234",
+    "location" : "Spain",
+    "height" : 1.80,
+    "setName":function(newName){
+        this.username=newName;
+    }
+}
+```
+Then you can call the setName method in the usual way:
+
+`var newname = prompt("Enter a new username:");`
+
+`user.setName(newname);`
+
+### Caution
+
+```
+While adding methods in this manner works fine in a JavaScript context, it is
+not permitted when using JSON as a general-purpose data interchange format.
+Functions declared this way will not be parsed correctly in a browser using
+native JSON parsing, though eval() will work. However, if you simply need
+to instantiate objects for use within your own script, you can add methods
+this way.
+
+See the following section on JSON security.
+```
+
+## Arrays
+Property values themselves can be JavaScript arrays:
+
+```JavaScript
+var bookListObject = {
+    "booklist": ["Foundation",
+            "Dune",
+            "Eon",
+            "2001 A Space Odyssey",
+            "Stranger In A Strange Land"]
+}
+```
+
+In the preceding example, the object has a property named booklist, the value
+of which is an array. You can access the individual items in the array by
+passing the required array key (remember that the array keys begin at zero):
+
+`var book = bookListObject.booklist[2]; // variable book has value "Eon"`
+
+The preceding line of code assigns to the variable book the second item in the
+booklist array object, which is a property of the object named
+`bookListObject`.
+
+## Objects
+The JSON object can even incorporate other objects. By making the array elements themselves JSON encoded objects, you can access them using dot notation.
+
+In the following example code, the value associated with the property booklist is an array of JSON objects. Each JSON object has two "parameter":"value" pairs, holding the title and author respectively of the book in question.
+
+After retrieving the array of books, as in the previous example, it is easy to then access the title and author properties:
+
+var bookListObject = {
+    "booklist": [{"title":"Foundation", "author":"Isaac Asimov"},
+        {"title":"Dune", "author":"Frank Herbert"},
+        {"title":"Eon", "author":"Greg Bear"},
+        {"title":"2001 A Space Odyssey", "author":"Arthur C. Clarke"},
+        {"title":"Stranger In A Strange Land", "author":"Robert A. Heinlein"}]
+    }
+    //show the author of the third book
+    alert(bookListObject.booklist[2].author); // displays "Greg Bear"
