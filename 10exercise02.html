@@ -2,14 +2,22 @@
   <head>
     <title>Hour 10, Exercise 2</title>
     <script>
-      var Dan = new Object();
-      Dan.height = 1.85;
-      Dan.age = 41;
-      Dan.eyeColor = "blue";
-      alert( JSON.stringify(Dan) );
+      uniformObject = new Object();
+      uniformObject.pants = 'Pro Pant';
+      uniformObject.color = 'Khaki';
+      uniformObject.size = 32;
+      uniformObject.length = 40;
+
+      function myUniform() {
+        alert(this.pants);
+      }
+
+      uniformObject.showPants = myUniform;
+      // alert( JSON.stringify(Dan) );
     </script>
   </head>
   <body>
+    <input type="button" value="Pants" onclick="uniformObject.showPants()" />
     <div id="div01"></div>
   </body>
 </html>
