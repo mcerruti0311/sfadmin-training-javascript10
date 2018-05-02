@@ -3,21 +3,28 @@
     <title>Hour 10, Exercise 2</title>
     <script>
       uniformObject = new Object();
-      uniformObject.pants = 'Pro Pant';
-      uniformObject.color = 'Khaki';
-      uniformObject.size = 32;
-      uniformObject.length = 40;
 
-      function myUniform() {
-        alert(this.pants);
+      var uniforms = [];
+      uniforms[0] = 'Khaki';
+      uniforms[1] = 30;
+      uniforms[2] = 40;
+
+      uniformObject = new Object();
+        uniformObject.color = uniforms[0];
+        uniformObject.pantLength = uniforms[1];
+        uniformObject.pantSize = uniforms[2];
+
+      uniformObject.showPants = function () {
+      //  alert(this.pants);
+      alert(JSON.stringify(uniformObject));
       }
 
-      uniformObject.showPants = myUniform;
+
       // alert( JSON.stringify(Dan) );
     </script>
   </head>
   <body>
-    <input type="button" value="Pants" onclick="uniformObject.showPants()" />
+    <input type="button" value="Stringify" onclick="uniformObject.showPants()" />
     <div id="div01"></div>
   </body>
 </html>
